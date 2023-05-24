@@ -1,7 +1,14 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToMany,
+  ManyToOne,
+} from 'typeorm';
+import { ProductEntity } from './product.entity';
 
 @Entity('produto_caracteristicas')
-export class ProdutoCaracteristica {
+export class ProdutoCaracteristicaEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -10,4 +17,11 @@ export class ProdutoCaracteristica {
 
   @Column({ name: 'descricao', length: 255, nullable: false })
   descricao: string;
+
+  @ManyToOne(() => ProductEntity, (product) => product.caracteristicas, {
+    orphanedRowAction: 'delete',
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
+  product: ProductEntity;
 }
